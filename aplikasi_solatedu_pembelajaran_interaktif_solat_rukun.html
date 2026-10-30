@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SolatEdu - Pembelajaran Interaktif Solat & Rukun (KSSR Tahun 1)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: {
+                            850: '#03543f',
+                            950: '#01281d',
+                        },
+                        amber: {
+                            350: '#fbbf24',
+                        }
+                    },
+                    fontFamily: {
+                        fredoka: ['Fredoka', 'sans-serif'],
+                        jakarta: ['Plus Jakarta Sans', 'sans-serif'],
+                        arabic: ['Amiri', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #f0fdf4;
+            color: #0f172a;
+        }
+        h1, h2, h3, .font-heading {
+            font-family: 'Fredoka', cursive, sans-serif;
+        }
+        .font-arabic {
+            font-family: 'Amiri', serif;
+            direction: rtl;
+        }
+        .glass-header {
+            background: rgba(4, 120, 87, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        .card-shadow {
+            box-shadow: 0 10px 25px -5px rgba(5, 150, 105, 0.1), 0 8px 10px -6px rgba(5, 150, 105, 0.05);
+        }
+        .btn-bounce {
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .btn-bounce:hover {
+            transform: translateY(-2px);
+        }
+        .btn-bounce:active {
+            transform: translateY(1px);
+        }
+        .tab-btn.active {
+            background-color: #059669;
+            color: white;
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #10b981;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col pb-12">
+
+    <!-- TOP BAR / HEADER -->
+    <header class="glass-header text-white sticky top-0 z-40 shadow-lg border-b border-emerald-600">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+            <!-- Logo & Title -->
+            <div class="flex items-center gap-3">
+                <div class="w-11 h-11 bg-amber-400 rounded-2xl flex items-center justify-center text-emerald-950 font-black text-xl shadow-md border-2 border-amber-200">
+                    🕌
+                </div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-extrabold tracking-wide leading-none flex items-center gap-2">
+                        SolatEdu
+                        <span class="text-xs font-semibold bg-amber-300 text-amber-950 px-2 py-0.5 rounded-full uppercase tracking-wider">KSSR Tahun 1</span>
+                    </h1>
+                    <p class="text-xs text-emerald-100 font-medium">Berdasarkan DSKP SP 4.4 & 4.5 • Model ADDIE</p>
+                </div>
+            </div>
+
+            <!-- Student Profile Badge & QR Code Trigger -->
+            <div class="flex items-center gap-2 md:gap-4">
+                <div class="hidden sm:flex items-center gap-2 bg-emerald-800/80 px-3 py-1.5 rounded-xl border border-emerald-600 text-xs">
+                    <span class="text-amber-300">👤 Murid:</span>
+                    <input type="text" id="studentNameInput" value="Ahmad Ziyad" class="bg-transparent text-white font-bold w-24 focus:outline-none border-b border-emerald-400">
+                </div>
+                
+                <button onclick="toggleQRModal()" class="bg-emerald-700 hover:bg-emerald-600 border border-emerald-500 p-2 rounded-xl text-xs font-semibold flex items-center gap-1 transition">
+                    <svg class="w-4 h-4 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
+                    </svg>
+                    <span class="hidden md:inline">Kod QR Akses</span>
+                </button>
+
+                <button onclick="toggleAudioGlobal()" id="globalAudioBtn" class="bg-amber-400 text-emerald-950 p-2 rounded-xl text-xs font-bold flex items-center gap-1 shadow-md hover:bg-amber-300 transition">
+                    🔊 Suara: ON
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- NAVIGATION TABS (5 MODULES FROM DRAFT PDF) -->
+    <nav class="bg-emerald-900 text-emerald-100 border-b border-emerald-800 shadow-inner px-2 py-2 overflow-x-auto">
+        <div class="max-w-7xl mx-auto flex items-center justify-start md:justify-center gap-1.5 md:gap-2 min-w-max">
+            <button onclick="switchTab('modul1')" id="tab-modul1" class="tab-btn active px-3.5 py-2 rounded-xl font-bold text-xs md:text-sm flex items-center gap-2 transition btn-bounce">
+                <span>01</span> 📖 Info Solat
+            </button>
+            <button onclick="switchTab('modul2')" id="tab-modul2" class="tab-btn px-3.5 py-2 rounded-xl font-bold text-xs md:text-sm flex items-center gap-2 transition btn-bounce">
+                <span>02</span> 🌅 Waktu & Rakaat
+            </button>
+            <button onclick="switchTab('modul3')" id="tab-modul3" class="tab-btn px-3.5 py-2 rounded-xl font-bold text-xs md:text-sm flex items-center gap-2 transition btn-bounce">
+                <span>03</span> 🎧 Audio Niat
+            </button>
+            <button onclick="switchTab('modul4')" id="tab-modul4" class="tab-btn px-3.5 py-2 rounded-xl font-bold text-xs md:text-sm flex items-center gap-2 transition btn-bounce">
+                <span>04</span> 🧩 13 Rukun Solat
+            </button>
+            <button onclick="switchTab('modul5')" id="tab-modul5" class="tab-btn px-3.5 py-2 rounded-xl font-bold text-xs md:text-sm flex items-center gap-2 transition btn-bounce">
+                <span>05</span> 🏆 Kuiz & PBD
+            </button>
+            <button onclick="switchTab('modul6')" id="tab-modul6" class="tab-btn px-3.5 py-2 rounded-xl font-bold text-xs md:text-sm flex items-center gap-2 transition btn-bounce bg-emerald-850 border border-emerald-700">
+                <span>📝</span> Penilaian Impak
+            </button>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="max-w-7xl mx-auto px-4 py-6 flex-1 w-full">
+
+        <!-- ========================================================= -->
+        <!-- MODUL 01: INFO SOLAT FARDHU (SP 4.4.1 - 4.4.4) -->
+        <!-- ========================================================= -->
+        <section id="modul1" class="tab-content block space-y-6">
+            
+            <!-- Banner Top -->
+            <div class="bg-gradient-to-r from-emerald-700 via-teal-700 to-emerald-800 text-white rounded-3xl p-6 md:p-8 card-shadow relative overflow-hidden">
+                <div class="relative z-10 max-w-3xl">
+                    <span class="inline-block bg-amber-400 text-emerald-950 font-extrabold text-xs px-3 py-1 rounded-full mb-3 uppercase tracking-wider">
+                        SP 4.4.1 • 4.4.2 • 4.4.4 Solat Tiang Agama
+                    </span>
+                    <h2 class="text-2xl md:text-4xl font-extrabold mb-3">Pengertian, Hukum & Dalil Solat Fardhu</h2>
+                    <p class="text-emerald-100 text-sm md:text-base leading-relaxed mb-4">
+                        Solat ialah perbuatan dan perkataan tertentu yang dimulakan dengan <strong class="text-amber-300">Takbiratul Ihram</strong> dan diakhiri dengan <strong class="text-amber-300">Salam</strong>.
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="speakText('Solat ialah perkataan dan perbuatan tertentu yang dimulakan dengan Takbiratul Ihram dan diakhiri dengan Salam. Hukum menunaikan solat fardhu ialah wajib bagi setiap orang Islam.')" class="bg-amber-400 hover:bg-amber-300 text-emerald-950 font-bold px-4 py-2 rounded-xl text-xs md:text-sm flex items-center gap-2 shadow-md btn-bounce">
+                            🔊 Dengarkan Penerangan
+                        </button>
+                        <span class="bg-emerald-900/60 border border-emerald-500/50 text-white font-semibold px-4 py-2 rounded-xl text-xs md:text-sm flex items-center gap-2">
+                            ⭐ Hukum: <strong class="text-amber-300">WAJIB</strong> (Fardhu 'Ain)
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid 2 Columns: Dalil & Kepentingan -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- Dalil Naqli Card -->
+                <div class="bg-white rounded-3xl p-6 border-2 border-emerald-100 card-shadow space-y-4">
+                    <div class="flex items-center gap-3 border-b border-emerald-100 pb-3">
+                        <div class="w-10 h-10 bg-emerald-100 text-emerald-700 rounded-xl flex items-center justify-center font-bold text-xl">
+                            📖
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-emerald-900">Dalil Naqli Solat Fardhu</h3>
+                            <p class="text-xs text-gray-500">Surah An-Nisa' (103)</p>
+                        </div>
+                    </div>
+
+                    <!-- Arabic Box -->
+                    <div class="bg-emerald-50/70 p-5 rounded-2xl border border-emerald-200 text-center space-y-3">
+                        <p class="font-arabic text-2xl md:text-3xl font-bold text-emerald-950 leading-loose">
+                            إِنَّ الصَّلَاةَ كَانَتْ عَلَى الْمُؤْمِنِينَ كِتَابًا مَّوْقُوتًا
+                        </p>
+                        <p class="text-xs md:text-sm text-emerald-800 font-medium italic">
+                            "Maksudnya: Sesungguhnya solat itu adalah satu ketetapan yang diwajibkan atas orang-orang yang beriman, yang tertentu waktunya."
+                        </p>
+                    </div>
+
+                    <button onclick="speakText('Innas solata kanat alal mu\'minina kitaban mauquta. Maksudnya: Sesungguhnya solat itu adalah satu ketetapan yang diwajibkan atas orang-orang yang beriman, yang tertentu waktunya.')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl text-xs md:text-sm flex items-center justify-center gap-2 shadow btn-bounce">
+                        ▶️ Baca Dalil Naqli
+                    </button>
+                </div>
+
+                <!-- Kepentingan & Akibat Card -->
+                <div class="bg-white rounded-3xl p-6 border-2 border-emerald-100 card-shadow space-y-4">
+                    <div class="flex items-center justify-between border-b border-emerald-100 pb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-amber-100 text-amber-700 rounded-xl flex items-center justify-center font-bold text-xl">
+                                🌟
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-emerald-900">Kepentingan & Akibat</h3>
+                                <p class="text-xs text-gray-500">Mengapa kita wajib bersolat?</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tabs Inside Card -->
+                    <div class="space-y-3">
+                        <h4 class="text-xs font-extrabold text-emerald-700 uppercase tracking-wider">Kepentingan Menunaikan Solat:</h4>
+                        <div class="grid grid-cols-2 gap-2 text-xs font-semibold">
+                            <div class="p-2.5 bg-emerald-50 text-emerald-900 rounded-xl border border-emerald-200 flex items-center gap-2">
+                                🟢 Bukti keimanan kepada Allah
+                            </div>
+                            <div class="p-2.5 bg-emerald-50 text-emerald-900 rounded-xl border border-emerald-200 flex items-center gap-2">
+                                🟢 Mendapat pahala & ampunan
+                            </div>
+                            <div class="p-2.5 bg-emerald-50 text-emerald-900 rounded-xl border border-emerald-200 flex items-center gap-2">
+                                🟢 Membentuk akhlak mulia
+                            </div>
+                            <div class="p-2.5 bg-emerald-50 text-emerald-900 rounded-xl border border-emerald-200 flex items-center gap-2">
+                                🟢 Mendisiplinkan diri
+                            </div>
+                        </div>
+
+                        <h4 class="text-xs font-extrabold text-red-600 uppercase tracking-wider pt-2">Hukum Meninggalkan Solat (Buku Teks ms 104):</h4>
+                        <div class="bg-red-50 p-3 rounded-xl border border-red-200 text-xs text-red-900 space-y-1">
+                            <p>• <strong>Sengaja & mempersendakan:</strong> Kafir (Wajib bertaubat)</p>
+                            <p>• <strong>Sengaja kerana malas:</strong> Fasiq & berdosa besar</p>
+                            <p>• <strong>Tersilap / Tertidur:</strong> Dimaafkan tetapi MESTI diganti (Qada')</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- ========================================================= -->
+        <!-- MODUL 02: WAKTU & RAKAAT (SP 4.4.3) -->
+        <!-- ========================================================= -->
+        <section id="modul2" class="tab-content hidden space-y-6">
+            
+            <div class="bg-white rounded-3xl p-6 border-2 border-emerald-100 card-shadow text-center">
+                <span class="inline-block bg-teal-100 text-teal-800 font-extrabold text-xs px-3 py-1 rounded-full mb-2">
+                    SP 4.4.3 Waktu Solat Fardhu
+                </span>
+                <h2 class="text-2xl md:text-3xl font-extrabold text-emerald-950 mb-2">5 Waktu Solat Fardhu & Bilangan Rakaat</h2>
+                <p class="text-gray-600 text-xs md:text-sm max-w-xl mx-auto">
+                    Klik pada setiap kad waktu solat di bawah untuk melihat bilangan rakaat dan gelagat ketetapan waktu berdasarkan isyarat alam (Buku Teks ms 102–104).
+                </p>
+            </div>
+
+            <!-- 5 Prayer Time Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                
+                <!-- Subuh -->
+                <div onclick="showPrayerDetail('Subuh', 2, 'Terbit fajar sadiq sehingga terbit matahari', '🌅')" class="bg-white hover:bg-emerald-50 border-2 border-emerald-200 rounded-3xl p-5 text-center cursor-pointer transition shadow-sm hover:border-emerald-500 btn-bounce group">
+                    <div class="w-16 h-16 bg-amber-100 rounded-2xl mx-auto flex items-center justify-center text-3xl mb-3 border border-amber-300">
+                        🌅
+                    </div>
+                    <h3 class="text-xl font-extrabold text-emerald-900 group-hover:text-emerald-700">Subuh</h3>
+                    <span class="inline-block mt-1 bg-emerald-700 text-white font-bold text-xs px-3 py-1 rounded-full">
+                        2 Rakaat
+                    </span>
+                    <p class="text-xs text-gray-500 mt-2">Terbit fajar sadiq</p>
+                </div>
+
+                <!-- Zohor -->
+                <div onclick="showPrayerDetail('Zohor', 4, 'Gelincir matahari sehingga bayang-bayang sama panjang dengan objek', '☀️')" class="bg-white hover:bg-emerald-50 border-2 border-emerald-200 rounded-3xl p-5 text-center cursor-pointer transition shadow-sm hover:border-emerald-500 btn-bounce group">
+                    <div class="w-16 h-16 bg-amber-100 rounded-2xl mx-auto flex items-center justify-center text-3xl mb-3 border border-amber-300">
+                        ☀️
+                    </div>
+                    <h3 class="text-xl font-extrabold text-emerald-900 group-hover:text-emerald-700">Zohor</h3>
+                    <span class="inline-block mt-1 bg-emerald-700 text-white font-bold text-xs px-3 py-1 rounded-full">
+                        4 Rakaat
+                    </span>
+                    <p class="text-xs text-gray-500 mt-2">Gelincir matahari</p>
+                </div>
+
+                <!-- Asar -->
+                <div onclick="showPrayerDetail('Asar', 4, 'Bayang-bayang lebih panjang daripada objek sehingga terbenam matahari', '🌤️')" class="bg-white hover:bg-emerald-50 border-2 border-emerald-200 rounded-3xl p-5 text-center cursor-pointer transition shadow-sm hover:border-emerald-500 btn-bounce group">
+                    <div class="w-16 h-16 bg-amber-100 rounded-2xl mx-auto flex items-center justify-center text-3xl mb-3 border border-amber-300">
+                        🌤️
+                    </div>
+                    <h3 class="text-xl font-extrabold text-emerald-900 group-hover:text-emerald-700">Asar</h3>
+                    <span class="inline-block mt-1 bg-emerald-700 text-white font-bold text-xs px-3 py-1 rounded-full">
+                        4 Rakaat
+                    </span>
+                    <p class="text-xs text-gray-500 mt-2">Bayang lebih panjang</p>
+                </div>
+
+                <!-- Maghrib -->
+                <div onclick="showPrayerDetail('Maghrib', 3, 'Terbenam matahari sehingga hilang cahaya merah di ufuk barat', '🌆')" class="bg-white hover:bg-emerald-50 border-2 border-emerald-200 rounded-3xl p-5 text-center cursor-pointer transition shadow-sm hover:border-emerald-500 btn-bounce group">
+                    <div class="w-16 h-16 bg-amber-100 rounded-2xl mx-auto flex items-center justify-center text-3xl mb-3 border border-amber-300">
+                        🌆
+                    </div>
+                    <h3 class="text-xl font-extrabold text-emerald-900 group-hover:text-emerald-700">Maghrib</h3>
+                    <span class="inline-block mt-1 bg-emerald-700 text-white font-bold text-xs px-3 py-1 rounded-full">
+                        3 Rakaat
+                    </span>
+                    <p class="text-xs text-gray-500 mt-2">Terbenam matahari</p>
+                </div>
+
+                <!-- Isyak -->
+                <div onclick="showPrayerDetail('Isyak', 4, 'Hilang cahaya merah di ufuk barat sehingga terbit fajar sadiq', '🌙')" class="bg-white hover:bg-emerald-50 border-2 border-emerald-200 rounded-3xl p-5 text-center cursor-pointer transition shadow-sm hover:border-emerald-500 btn-bounce group">
+                    <div class="w-16 h-16 bg-amber-100 rounded-2xl mx-auto flex items-center justify-center text-3xl mb-3 border border-amber-300">
+                        🌙
+                    </div>
+                    <h3 class="text-xl font-extrabold text-emerald-900 group-hover:text-emerald-700">Isyak</h3>
+                    <span class="inline-block mt-1 bg-emerald-700 text-white font-bold text-xs px-3 py-1 rounded-full">
+                        4 Rakaat
+                    </span>
+                    <p class="text-xs text-gray-500 mt-2">Hilang mega merah</p>
+                </div>
+
+            </div>
+
+            <!-- Detail Prayer Info Display Modal/Box -->
+            <div id="prayerDetailBox" class="bg-emerald-900 text-white rounded-3xl p-6 card-shadow hidden border-2 border-amber-300">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                        <span id="prayerIcon" class="text-5xl">🌅</span>
+                        <div>
+                            <h3 id="prayerTitle" class="text-2xl font-extrabold text-amber-300">Solat Subuh</h3>
+                            <p id="prayerRakaat" class="text-sm text-emerald-100">Bilangan Rakaat: 2 Rakaat</p>
+                            <p id="prayerTime" class="text-xs text-emerald-200 mt-1 italic">Tanda Waktu: Terbit fajar sadiq</p>
+                        </div>
+                    </div>
+                    <button onclick="playPrayerAudioInfo()" class="bg-amber-400 text-emerald-950 font-bold px-5 py-3 rounded-2xl text-xs md:text-sm flex items-center gap-2 shadow-lg btn-bounce">
+                        🔊 Sebut Penjelasan Waktu
+                    </button>
+                </div>
+            </div>
+
+            <!-- Total Rakaat Summary Box -->
+            <div class="bg-amber-50 border-2 border-amber-200 rounded-3xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <span class="text-3xl">📊</span>
+                    <div>
+                        <h4 class="font-extrabold text-emerald-950 text-base">Jumlah Rakaat Solat Sehari Semalam</h4>
+                        <p class="text-xs text-gray-600">Subuh(2) + Zohor(4) + Asar(4) + Maghrib(3) + Isyak(4)</p>
+                    </div>
+                </div>
+                <div class="text-3xl font-black text-emerald-800 bg-white px-6 py-2 rounded-2xl border border-amber-300 shadow-sm">
+                    17 <span class="text-xs font-semibold text-gray-500">Rakaat</span>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- ========================================================= -->
+        <!-- MODUL 03: AUDIO KAD NIAT SOLAT (SP 4.5.3) -->
+        <!-- ========================================================= -->
+        <section id="modul3" class="tab-content hidden space-y-6">
+            
+            <div class="bg-white rounded-3xl p-6 border-2 border-emerald-100 card-shadow text-center">
+                <span class="inline-block bg-emerald-100 text-emerald-800 font-extrabold text-xs px-3 py-1 rounded-full mb-2">
+                    SP 4.5.3 Hafalan Niat Solat
+                </span>
+                <h2 class="text-2xl md:text-3xl font-extrabold text-emerald-950 mb-2">Kad Audio Hafalan Niat Solat 5 Waktu</h2>
+                <p class="text-gray-600 text-xs md:text-sm max-w-xl mx-auto">
+                    Niat dalam HATI adalah <strong>WAJIB</strong> ketika Takbiratul Ihram, manakala melafazkannya adalah <strong>SUNAT</strong> (Buku Teks ms 107).
+                </p>
+            </div>
+
+            <!-- Audio Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- Subuh Niat -->
+                <div class="bg-white rounded-3xl p-6 border-2 border-emerald-200 card-shadow space-y-4 relative">
+                    <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                        <span class="bg-emerald-100 text-emerald-800 font-bold text-xs px-3 py-1 rounded-full">Solat Subuh (2 Rakaat)</span>
+                        <button onclick="playNiatAudio('subuh')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold p-2.5 rounded-xl text-xs flex items-center gap-1.5 shadow btn-bounce">
+                            ▶️ Mainkan Audio
+                        </button>
+                    </div>
+                    <div class="text-right py-2">
+                        <p class="font-arabic text-2xl font-bold text-emerald-950 leading-relaxed">
+                            أُصَلِّي فَرْضَ الصُّبْحِ رَكْعَتَيْنِ أَدَاءً لِلَّهِ تَعَالَى
+                        </p>
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded-2xl text-xs space-y-1 border border-gray-200">
+                        <p class="font-bold text-emerald-800">Rumi: Usolli fardhas-subhi rak'ataini adaan lillahi ta'ala.</p>
+                        <p class="text-gray-600">Terjemahan: "Sahaja aku solat fardhu Subuh dua rakaat tunai kerana Allah Ta'ala."</p>
+                    </div>
+                </div>
+
+                <!-- Zohor Niat -->
+                <div class="bg-white rounded-3xl p-6 border-2 border-emerald-200 card-shadow space-y-4">
+                    <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                        <span class="bg-emerald-100 text-emerald-800 font-bold text-xs px-3 py-1 rounded-full">Solat Zohor (4 Rakaat)</span>
+                        <button onclick="playNiatAudio('zohor')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold p-2.5 rounded-xl text-xs flex items-center gap-1.5 shadow btn-bounce">
+                            ▶️ Mainkan Audio
+                        </button>
+                    </div>
+                    <div class="text-right py-2">
+                        <p class="font-arabic text-2xl font-bold text-emerald-950 leading-relaxed">
+                            أُصَلِّي فَرْضَ الظُّهْرِ أَرْبَعَ رَكَعَاتٍ أَدَاءً لِلَّهِ تَعَالَى
+                        </p>
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded-2xl text-xs space-y-1 border border-gray-200">
+                        <p class="font-bold text-emerald-800">Rumi: Usolli fardhaz-zuhri arba'a raka'atin adaan lillahi ta'ala.</p>
+                        <p class="text-gray-600">Terjemahan: "Sahaja aku solat fardhu Zohor empat rakaat tunai kerana Allah Ta'ala."</p>
+                    </div>
+                </div>
+
+                <!-- Asar Niat -->
+                <div class="bg-white rounded-3xl p-6 border-2 border-emerald-200 card-shadow space-y-4">
+                    <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                        <span class="bg-emerald-100 text-emerald-800 font-bold text-xs px-3 py-1 rounded-full">Solat Asar (4 Rakaat)</span>
+                        <button onclick="playNiatAudio('asar')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold p-2.5 rounded-xl text-xs flex items-center gap-1.5 shadow btn-bounce">
+                            ▶️ Mainkan Audio
+                        </button>
+                    </div>
+                    <div class="text-right py-2">
+                        <p class="font-arabic text-2xl font-bold text-emerald-950 leading-relaxed">
+                            أُصَلِّي فَرْضَ الْعَصْرِ أَرْبَعَ رَكَعَاتٍ أَدَاءً لِلَّهِ تَعَالَى
+                        </p>
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded-2xl text-xs space-y-1 border border-gray-200">
+                        <p class="font-bold text-emerald-800">Rumi: Usolli fardhal-'asri arba'a raka'atin adaan lillahi ta'ala.</p>
+                        <p class="text-gray-600">Terjemahan: "Sahaja aku solat fardhu Asar empat rakaat tunai kerana Allah Ta'ala."</p>
+                    </div>
+                </div>
+
+                <!-- Maghrib Niat -->
+                <div class="bg-white rounded-3xl p-6 border-2 border-emerald-200 card-shadow space-y-4">
+                    <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                        <span class="bg-emerald-100 text-emerald-800 font-bold text-xs px-3 py-1 rounded-full">Solat Maghrib (3 Rakaat)</span>
+                        <button onclick="playNiatAudio('maghrib')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold p-2.5 rounded-xl text-xs flex items-center gap-1.5 shadow btn-bounce">
+                            ▶️ Mainkan Audio
+                        </button>
+                    </div>
+                    <div class="text-right py-2">
+                        <p class="font-arabic text-2xl font-bold text-emerald-950 leading-relaxed">
+                            أُصَلِّي فَرْضَ الْمَغْرِبِ ثَلَاثَ رَكَعَاتٍ أَدَاءً لِلَّهِ تَعَالَى
+                        </p>
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded-2xl text-xs space-y-1 border border-gray-200">
+                        <p class="font-bold text-emerald-800">Rumi: Usolli fardhal-maghribi thalatha raka'atin adaan lillahi ta'ala.</p>
+                        <p class="text-gray-600">Terjemahan: "Sahaja aku solat fardhu Maghrib tiga rakaat tunai kerana Allah Ta'ala."</p>
+                    </div>
+                </div>
+
+                <!-- Isyak Niat -->
+                <div class="bg-white rounded-3xl p-6 border-2 border-emerald-200 card-shadow space-y-4 md:col-span-2">
+                    <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                        <span class="bg-emerald-100 text-emerald-800 font-bold text-xs px-3 py-1 rounded-full">Solat Isyak (4 Rakaat)</span>
+                        <button onclick="playNiatAudio('isyak')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold p-2.5 rounded-xl text-xs flex items-center gap-1.5 shadow btn-bounce">
+                            ▶️ Mainkan Audio
+                        </button>
+                    </div>
+                    <div class="text-right py-2">
+                        <p class="font-arabic text-2xl font-bold text-emerald-950 leading-relaxed">
+                            أُصَلِّي فَرْضَ الْعِشَاءِ أَرْبَعَ رَكَعَاتٍ أَدَاءً لِلَّهِ تَعَالَى
+                        </p>
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded-2xl text-xs space-y-1 border border-gray-200">
+                        <p class="font-bold text-emerald-800">Rumi: Usolli fardhal-'ishaa-i arba'a raka'atin adaan lillahi ta'ala.</p>
+                        <p class="text-gray-600">Terjemahan: "Sahaja aku solat fardhu Isyak empat rakaat tunai kerana Allah Ta'ala."</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ========================================================= -->
+        <!-- MODUL 04: INTERAKTIF 13 RUKUN SOLAT (SP 4.5.1 & 4.5.2) -->
+        <!-- ========================================================= -->
+        <section id="modul4" class="tab-content hidden space-y-6">
+            
+            <div class="bg-white rounded-3xl p-6 border-2 border-emerald-100 card-shadow text-center">
+                <span class="inline-block bg-emerald-100 text-emerald-800 font-extrabold text-xs px-3 py-1 rounded-full mb-2">
+                    SP 4.5.1 & 4.5.2 Rukun Solat
+                </span>
+                <h2 class="text-2xl md:text-3xl font-extrabold text-emerald-950 mb-2">Ketahui & Susun 13 Rukun Solat</h2>
+                <p class="text-gray-600 text-xs md:text-sm max-w-xl mx-auto mb-4">
+                    Rukun solat terbahagi kepada 3 jenis utama: <strong>Qalbi</strong> (Hati), <strong>Qauli</strong> (Perkataan), dan <strong>Fi'li</strong> (Perbuatan fizikal).
+                </p>
+
+                <!-- Category Filters -->
+                <div class="flex flex-wrap justify-center gap-2 text-xs font-bold">
+                    <button onclick="filterRukun('semua')" id="btn-rukun-semua" class="rukun-filter-btn px-4 py-2 rounded-xl bg-emerald-700 text-white shadow">
+                        Semua (13 Rukun)
+                    </button>
+                    <button onclick="filterRukun('Qalbi')" id="btn-rukun-qalbi" class="rukun-filter-btn px-4 py-2 rounded-xl bg-white text-emerald-800 border border-emerald-300">
+                        ❤️ Qalbi (Hati)
+                    </button>
+                    <button onclick="filterRukun('Qauli')" id="btn-rukun-qauli" class="rukun-filter-btn px-4 py-2 rounded-xl bg-white text-emerald-800 border border-emerald-300">
+                        🗣️ Qauli (Perkataan)
+                    </button>
+                    <button onclick="filterRukun('Fi\'li')" id="btn-rukun-fili" class="rukun-filter-btn px-4 py-2 rounded-xl bg-white text-emerald-800 border border-emerald-300">
+                        🧍 Fi'li (Perbuatan)
+                    </button>
+                </div>
+            </div>
+
+            <!-- 13 Rukun Visual Cards Grid -->
+            <div id="rukunCardsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Javascript will inject 13 rukun cards here dynamically -->
+            </div>
+
+            <!-- Interactive Sorting Game Box -->
+            <div class="bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-300 rounded-3xl p-6 card-shadow space-y-4">
+                <div class="flex items-center gap-3 border-b border-amber-200 pb-3">
+                    <span class="text-3xl">🎮</span>
+                    <div>
+                        <h3 class="text-lg font-extrabold text-amber-950">Permainan Uji Minda: Padankan Jenis Rukun Solat</h3>
+                        <p class="text-xs text-amber-800">Tentukan sama ada rukun berikut adalah Qalbi, Qauli atau Fi'li!</p>
+                    </div>
+                </div>
+
+                <div id="rukunGameContainer" class="bg-white p-5 rounded-2xl border border-amber-200 space-y-4 text-center">
+                    <span id="gameRukunBadge" class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full">Soalan 1 / 5</span>
+                    <h4 id="gameRukunQuestion" class="text-xl font-bold text-emerald-950">Membaca Surah Al-Fatihah</h4>
+                    <p class="text-xs text-gray-500">Apakah jenis kategori rukun bagi perbuatan di atas?</p>
+
+                    <div class="flex flex-wrap justify-center gap-3 pt-2">
+                        <button onclick="answerRukunGame('Qalbi')" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border-2 border-emerald-300 px-5 py-2.5 rounded-xl font-bold text-xs md:text-sm btn-bounce">
+                            ❤️ Qalbi (Hati)
+                        </button>
+                        <button onclick="answerRukunGame('Qauli')" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border-2 border-emerald-300 px-5 py-2.5 rounded-xl font-bold text-xs md:text-sm btn-bounce">
+                            🗣️ Qauli (Perkataan)
+                        </button>
+                        <button onclick="answerRukunGame('Fi\'li')" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border-2 border-emerald-300 px-5 py-2.5 rounded-xl font-bold text-xs md:text-sm btn-bounce">
+                            🧍 Fi'li (Perbuatan)
+                        </button>
+                    </div>
+                    <div id="gameRukunFeedback" class="text-xs font-bold min-h-[20px]"></div>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- ========================================================= -->
+        <!-- MODUL 05: KUIZ INTERAKTIF & PBD ASSESSMENT (SP 4.4 & 4.5) -->
+        <!-- ========================================================= -->
+        <section id="modul5" class="tab-content hidden space-y-6">
+            
+            <div class="bg-white rounded-3xl p-6 border-2 border-emerald-100 card-shadow text-center">
+                <span class="inline-block bg-amber-300 text-emerald-950 font-extrabold text-xs px-3 py-1 rounded-full mb-2">
+                    Penilaian Pentaksiran Bilik Darjah (PBD)
+                </span>
+                <h2 class="text-2xl md:text-3xl font-extrabold text-emerald-950 mb-2">Kuiz Solat Interaktif & Borang PBD</h2>
+                <p class="text-gray-600 text-xs md:text-sm max-w-xl mx-auto">
+                    Jawab soalan di bawah untuk menentukan Tahap Penguasaan (TP1 - TP6) mengikut Standard DSKP KSSR.
+                </p>
+            </div>
+
+            <!-- Quiz Interactive Widget Container -->
+            <div id="quizWidget" class="bg-white rounded-3xl p-6 md:p-8 border-2 border-emerald-200 card-shadow space-y-6">
+                
+                <!-- Quiz Navigation / Score Header -->
+                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-4">
+                    <span id="quizCounter" class="bg-emerald-700 text-white font-bold text-xs px-3.5 py-1.5 rounded-full">Soalan 1 / 5</span>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold text-gray-500">Markah Semasa:</span>
+                        <span id="quizScoreText" class="text-lg font-black text-amber-500 bg-amber-50 px-3 py-1 rounded-xl border border-amber-200">0</span>
+                    </div>
+                </div>
+
+                <!-- Dynamic Question Body -->
+                <div id="quizQuestionBody" class="space-y-4">
+                    <!-- Javascript will inject question content -->
+                </div>
+
+                <!-- Submit / Next Button -->
+                <div class="flex justify-end pt-4 border-t border-gray-100">
+                    <button onclick="submitQuizAnswer()" id="quizSubmitBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-2xl text-xs md:text-sm flex items-center gap-2 shadow-md btn-bounce">
+                        <span>Hantar Jawapan</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- PBD Mastery Level Summary Card (Visible after quiz or dynamic) -->
+            <div id="pbdSummaryCard" class="bg-gradient-to-r from-emerald-800 to-teal-900 text-white rounded-3xl p-6 card-shadow border-2 border-amber-300 space-y-4">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div>
+                        <span class="bg-amber-400 text-emerald-950 font-black text-xs px-3 py-1 rounded-full uppercase">Laporan PBD Murid</span>
+                        <h3 class="text-xl md:text-2xl font-extrabold mt-1">Tahap Penguasaan (TP) DSKP</h3>
+                        <p class="text-xs text-emerald-100 mt-0.5">Penilaian Automatik berdasarkan skor kuiz & aktiviti interaktif.</p>
+                    </div>
+                    <div class="text-center bg-emerald-950/80 px-6 py-3 rounded-2xl border border-emerald-600">
+                        <div class="text-3xl font-black text-amber-300" id="tpScoreDisplay">TP 3</div>
+                        <p class="text-[10px] text-emerald-200 uppercase font-semibold">Menguasai Asas</p>
+                    </div>
+                </div>
+
+                <!-- TP Rubric Table -->
+                <div class="bg-emerald-950/50 p-4 rounded-2xl text-xs space-y-2 border border-emerald-700">
+                    <p class="font-bold text-amber-300">Deskripsi Tahap Penguasaan DSKP Solat & Rukun:</p>
+                    <ul class="space-y-1 text-emerald-100">
+                        <li>• <strong>TP 1 (10-20%):</strong> Menyatakan asas konsep solat dan rukun.</li>
+                        <li>• <strong>TP 2 (30-40%):</strong> Menjelaskan konsep solat dan rukun dengan betul.</li>
+                        <li>• <strong>TP 3 (50-60%):</strong> Menjelaskan dan mengaplikasikan bacaan niat & perbuatan solat.</li>
+                        <li>• <strong>TP 4 (70-80%):</strong> Menghayati solat fardhu serta menghuraikan syarat & rukunnya.</li>
+                        <li>• <strong>TP 5-6 (90-100%):</strong> Menganalisis, merumuskan & boleh membimbing rakan lain.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- ========================================================= -->
+        <!-- MODUL 06: BORANG PENILAIAN KEBOLEHGUNAAN & REFLEKSI (PDF MS 7-8) -->
+        <!-- ========================================================= -->
+        <section id="modul6" class="tab-content hidden space-y-6">
+            
+            <div class="bg-white rounded-3xl p-6 border-2 border-emerald-100 card-shadow text-center">
+                <span class="inline-block bg-teal-100 text-teal-800 font-extrabold text-xs px-3 py-1 rounded-full mb-2">
+                    Model ADDIE • Fasa Penilaian
+                </span>
+                <h2 class="text-2xl md:text-3xl font-extrabold text-emerald-950 mb-2">Borang Penilaian Kebolehgunaan Aplikasi</h2>
+                <p class="text-gray-600 text-xs md:text-sm max-w-xl mx-auto">
+                    Sila berikan penilaian bintang dan maklum balas bagi tujuan penambahbaikan pedagogi multimedia SolatEdu.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- Student Star Rating Form -->
+                <div class="bg-white rounded-3xl p-6 border-2 border-emerald-200 card-shadow space-y-4">
+                    <h3 class="text-lg font-bold text-emerald-900 border-b border-gray-100 pb-2">⭐ Penilaian Murid (Star Rating)</h3>
+                    
+                    <div class="space-y-3 text-xs font-semibold">
+                        <div>
+                            <label class="block text-gray-700 mb-1">1. Adakah grafik & visual menarik?</label>
+                            <div class="flex gap-2 text-2xl text-amber-400 cursor-pointer" id="starGroup1">
+                                <span onclick="setRating(1, 1)">★</span><span onclick="setRating(1, 2)">★</span><span onclick="setRating(1, 3)">★</span><span onclick="setRating(1, 4)">★</span><span onclick="setRating(1, 5)">★</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-700 mb-1">2. Adakah audio niat & bacaan solat jelas?</label>
+                            <div class="flex gap-2 text-2xl text-amber-400 cursor-pointer" id="starGroup2">
+                                <span onclick="setRating(2, 1)">★</span><span onclick="setRating(2, 2)">★</span><span onclick="setRating(2, 3)">★</span><span onclick="setRating(2, 4)">★</span><span onclick="setRating(2, 5)">★</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-700 mb-1">3. Adakah kuiz ini menyeronokkan?</label>
+                            <div class="flex gap-2 text-2xl text-amber-400 cursor-pointer" id="starGroup3">
+                                <span onclick="setRating(3, 1)">★</span><span onclick="setRating(3, 2)">★</span><span onclick="setRating(3, 3)">★</span><span onclick="setRating(3, 4)">★</span><span onclick="setRating(3, 5)">★</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Teacher Feedback Form -->
+                <div class="bg-white rounded-3xl p-6 border-2 border-emerald-200 card-shadow space-y-4">
+                    <h3 class="text-lg font-bold text-emerald-900 border-b border-gray-100 pb-2">👨‍🏫 Borang Impak Pedagogi Guru / Ibu Bapa</h3>
+                    
+                    <form onsubmit="submitFeedbackForm(event)" class="space-y-3 text-xs">
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1">Nama Guru / Ibu Bapa:</label>
+                            <input type="text" required placeholder="Contoh: Ustazah Fatimah" class="w-full p-2.5 border border-gray-300 rounded-xl focus:outline-none focus:border-emerald-500">
+                        </div>
+
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1">Ulasan Kesesuai PdP:</label>
+                            <textarea rows="3" required placeholder="Bahan bantu mengajar ini sangat interaktif dan membantu murid memahami 13 rukun solat..." class="w-full p-2.5 border border-gray-300 rounded-xl focus:outline-none focus:border-emerald-500"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow btn-bounce">
+                            Hantar Maklum Balas
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer class="bg-emerald-950 text-emerald-200 py-6 text-center text-xs border-t border-emerald-800 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 space-y-1">
+            <p class="font-bold text-amber-300">Aplikasi SolatEdu • Tugasan 2 EDUP 6023</p>
+            <p>Pembangunan Bahan Multimedia Pendidikan Islam (KSSR Semakan Tahun 1)</p>
+            <p class="text-emerald-400 text-[10px]">Perekabentuk: Sheikh Muhammad Arif Bin Sheikh Zainal Abidin</p>
+        </div>
+    </footer>
+
+
+    <!-- QR CODE MODAL -->
+    <div id="qrModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-3xl p-6 max-w-sm w-full text-center space-y-4 border-4 border-emerald-500 shadow-2xl">
+            <div class="flex justify-between items-center border-b pb-2">
+                <h3 class="font-extrabold text-emerald-950 text-base">Kod QR Imbasan Akses</h3>
+                <button onclick="toggleQRModal()" class="text-gray-400 hover:text-red-500 font-bold text-lg">✕</button>
+            </div>
+            
+            <!-- Simulated QR Canvas/SVG -->
+            <div class="bg-gray-100 p-4 rounded-2xl border border-gray-200 flex justify-center">
+                <svg class="w-48 h-48 text-emerald-900" viewBox="0 0 100 100" fill="currentColor">
+                    <rect width="100" height="100" fill="white"/>
+                    <!-- QR Pattern Simulation -->
+                    <rect x="10" y="10" width="25" height="25" fill="#047857"/>
+                    <rect x="15" y="15" width="15" height="15" fill="white"/>
+                    <rect x="18" y="18" width="9" height="9" fill="#047857"/>
+                    
+                    <rect x="65" y="10" width="25" height="25" fill="#047857"/>
+                    <rect x="70" y="15" width="15" height="15" fill="white"/>
+                    <rect x="73" y="18" width="9" height="9" fill="#047857"/>
+
+                    <rect x="10" y="65" width="25" height="25" fill="#047857"/>
+                    <rect x="15" y="70" width="15" height="15" fill="white"/>
+                    <rect x="18" y="73" width="9" height="9" fill="#047857"/>
+
+                    <!-- Random Modules -->
+                    <rect x="40" y="15" width="10" height="10" fill="#047857"/>
+                    <rect x="45" y="30" width="15" height="10" fill="#047857"/>
+                    <rect x="20" y="45" width="10" height="15" fill="#047857"/>
+                    <rect x="60" y="45" width="25" height="10" fill="#047857"/>
+                    <rect x="45" y="65" width="15" height="15" fill="#047857"/>
+                    <rect x="70" y="70" width="15" height="15" fill="#047857"/>
+                </svg>
+            </div>
+            
+            <p class="text-xs text-gray-600">Imbas Kod QR ini di surau sekolah atau di peranti murid untuk terus membuka aplikasi SolatEdu.</p>
+            <button onclick="toggleQRModal()" class="w-full bg-emerald-700 text-white font-bold py-2.5 rounded-xl text-xs">Tutup Modal</button>
+        </div>
+    </div>
+
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        /* ================= GLOBAL STATE ================= */
+        let globalAudioEnabled = true;
+        let currentQuizIdx = 0;
+        let quizScore = 0;
+
+        // 13 Rukun Solat Data
+        const rukunData = [
+            { id: 1, name: "Niat", category: "Qalbi", desc: "Berniat solat di dalam hati ketika Takbiratul Ihram.", icon: "❤️" },
+            { id: 2, name: "Berdiri Bagi Yang Mampu", category: "Fi'li", desc: "Berdiri tegak bagi solat fardhu sekiranya mampu.", icon: "🧍" },
+            { id: 3, name: "Takbiratul Ihram", category: "Qauli", desc: "Melaflazkan 'Allahu Akbar' pada permulaan solat.", icon: "🗣️" },
+            { id: 4, name: "Membaca Surah Al-Fatihah", category: "Qauli", desc: "Membaca surah Al-Fatihah dengan tajwid yang betul.", icon: "📖" },
+            { id: 5, name: "Rukuk serta Tuma'ninah", category: "Fi'li", desc: "Membongkokkan badan sehingga tapak tangan sampai ke lutut.", icon: "🙇" },
+            { id: 6, name: "I'tidal serta Tuma'ninah", category: "Fi'li", desc: "Bangun tegak semula selepas rukuk.", icon: "🧍" },
+            { id: 7, name: "Sujud Dua Kali serta Tuma'ninah", category: "Fi'li", desc: "Sujud menempelkan 7 anggota sujud ke lantai.", icon: "🧎" },
+            { id: 8, name: "Duduk Antara Dua Sujud serta Tuma'ninah", category: "Fi'li", desc: "Duduk di antara sujud pertama dan kedua.", icon: "🧘" },
+            { id: 9, name: "Duduk Tahiyyat Akhir", category: "Fi'li", desc: "Duduk secara Tawarruk pada rakaat terakhir.", icon: "🪑" },
+            { id: 10, name: "Membaca Tahiyyat Akhir", category: "Qauli", desc: "Membaca lafaz bacaan Tahiyyat Akhir.", icon: "📜" },
+            { id: 11, name: "Selawat Atas Nabi Dalam Tahiyyat Akhir", category: "Qauli", desc: "Membaca selawat ke atas Nabi Muhammad SAW.", icon: "✨" },
+            { id: 12, name: "Memberi Salam Pertama", category: "Qauli", desc: "Membaca 'Assalamualaikum warahmatullah' ke kanan.", icon: "👋" },
+            { id: 13, name: "Tertib", category: "Qalbi", desc: "Melakukan semua rukun mengikut urutan dari awal hingga akhir.", icon: "🔢" }
+        ];
+
+        // Quiz Questions Data (Interactive image choices & DSKP topics)
+        const quizQuestions = [
+            {
+                q: "Apakah maksud Wudhuk & Solat mengikut bahasa dan syarak?",
+                hint: "Pilih pengertian solat yang tepat:",
+                options: [
+                    "A. Perkataan dan perbuatan yang dimulakan dengan Takbiratul Ihram & diakhiri dengan Salam.",
+                    "B. Membaca doa tidur sebelum masuk ke surau.",
+                    "C. Pergerakan riadah ringan pada waktu pagi."
+                ],
+                correct: 0,
+                explanation: "Betul! Solat ialah perkataan & perbuatan tertentu diawali Takbiratul Ihram dan diakhiri Salam."
+            },
+            {
+                q: "Berapakah bilangan rakaat bagi Solat Maghrib?",
+                hint: "Fikirkan bilangan rakaat solat yang ditunai selepas terbenam matahari:",
+                options: [
+                    "A. 2 Rakaat",
+                    "B. 3 Rakaat",
+                    "C. 4 Rakaat"
+                ],
+                correct: 1,
+                explanation: "Tepat! Solat Maghrib mengandungi 3 rakaat."
+            },
+            {
+                q: "Manakah antara berikut merupakan rukun kategori QAULI (Perkataan)?",
+                hint: "Pilih rukun yang sebutannya wajib dilafazkan:",
+                options: [
+                    "A. Sujud dua kali",
+                    "B. Membaca Surah Al-Fatihah",
+                    "C. Duduk antara dua sujud"
+                ],
+                correct: 1,
+                explanation: "Syabas! Membaca Surah Al-Fatihah ialah Rukun Qauli."
+            },
+            {
+                q: "Berapakah jumlah anggota sujud yang wajib menyentuh sajadah?",
+                hint: "Termasuk dahi, dua tapak tangan, dua lutut & hujung jari kaki:",
+                options: [
+                    "A. 5 Anggota",
+                    "B. 7 Anggota",
+                    "C. 10 Anggota"
+                ],
+                correct: 1,
+                explanation: "Betul! Ada 7 anggota sujud mengikut syarak (Buku teks ms 110)."
+            },
+            {
+                q: "Apakah hukum menunaikan solat fardhu 5 waktu bagi seorang Muslim?",
+                hint: "Pilih hukum yang paling tepat mengikut DSKP:",
+                options: [
+                    "A. Wajib (Fardhu 'Ain)",
+                    "B. Sunat Muakkad",
+                    "C. Harus"
+                ],
+                correct: 0,
+                explanation: "Tepat sekali! Hukum menunaikan solat fardhu ialah WAJIB."
+            }
+        ];
+
+        // Rukun Mini Game State
+        let currentGameRukunIdx = 0;
+        const rukunGameQuestions = [
+            { name: "Membaca Surah Al-Fatihah", category: "Qauli" },
+            { name: "Niat di dalam hati", category: "Qalbi" },
+            { name: "Sujud dua kali", category: "Fi'li" },
+            { name: "Memberi salam pertama", category: "Qauli" },
+            { name: "Tertib mengikut urutan", category: "Qalbi" }
+        ];
+
+        /* ================= TAB SWITCHING LOGIC ================= */
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(tabId).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            if(activeBtn) activeBtn.classList.add('active');
+
+            if(tabId === 'modul4') renderRukunCards('semua');
+            if(tabId === 'modul5') renderQuizQuestion();
+        }
+
+        /* ================= AUDIO SPEECH SYNTHESIS ================= */
+        function toggleAudioGlobal() {
+            globalAudioEnabled = !globalAudioEnabled;
+            const btn = document.getElementById('globalAudioBtn');
+            if (globalAudioEnabled) {
+                btn.innerHTML = "🔊 Suara: ON";
+                btn.className = "bg-amber-400 text-emerald-950 p-2 rounded-xl text-xs font-bold flex items-center gap-1 shadow-md hover:bg-amber-300 transition";
+            } else {
+                btn.innerHTML = "🔇 Suara: OFF";
+                btn.className = "bg-gray-400 text-white p-2 rounded-xl text-xs font-bold flex items-center gap-1 shadow-md transition";
+                window.speechSynthesis.cancel();
+            }
+        }
+
+        function speakText(text) {
+            if (!globalAudioEnabled) return;
+            window.speechSynthesis.cancel(); // stop active sound
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'ms-MY';
+            utterance.rate = 0.9;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function playNiatAudio(prayerName) {
+            const texts = {
+                subuh: "Niat Solat Subuh: Usolli fardhas subhi rak'ataini adaan lillahi ta'ala. Sahaja aku solat fardhu Subuh dua rakaat tunai kerana Allah Ta'ala.",
+                zohor: "Niat Solat Zohor: Usolli fardhaz zuhri arba'a raka'atin adaan lillahi ta'ala. Sahaja aku solat fardhu Zohor empat rakaat tunai kerana Allah Ta'ala.",
+                asar: "Niat Solat Asar: Usolli fardhal 'asri arba'a raka'atin adaan lillahi ta'ala. Sahaja aku solat fardhu Asar empat rakaat tunai kerana Allah Ta'ala.",
+                maghrib: "Niat Solat Maghrib: Usolli fardhal maghribi thalatha raka'atin adaan lillahi ta'ala. Sahaja aku solat fardhu Maghrib tiga rakaat tunai kerana Allah Ta'ala.",
+                isyak: "Niat Solat Isyak: Usolli fardhal 'ishaa-i arba'a raka'atin adaan lillahi ta'ala. Sahaja aku solat fardhu Isyak empat rakaat tunai kerana Allah Ta'ala."
+            };
+            if (texts[prayerName]) speakText(texts[prayerName]);
+        }
+
+        /* ================= MODUL 02 PRAYER DETAILS ================= */
+        function showPrayerDetail(title, rakaat, timeStr, icon) {
+            const box = document.getElementById('prayerDetailBox');
+            document.getElementById('prayerTitle').textContent = `Solat ${title}`;
+            document.getElementById('prayerRakaat').textContent = `Bilangan Rakaat: ${rakaat} Rakaat`;
+            document.getElementById('prayerTime').textContent = `Tanda Waktu Alam: ${timeStr}`;
+            document.getElementById('prayerIcon').textContent = icon;
+            
+            box.classList.remove('hidden');
+            speakText(`Solat ${title}, ${rakaat} rakaat. Waktunya bermula ${timeStr}`);
+        }
+
+        function playPrayerAudioInfo() {
+            const title = document.getElementById('prayerTitle').textContent;
+            const rakaat = document.getElementById('prayerRakaat').textContent;
+            const time = document.getElementById('prayerTime').textContent;
+            speakText(`${title}. ${rakaat}. ${time}`);
+        }
+
+        /* ================= MODUL 04 RUKUN CARDS & GAME ================= */
+        function renderRukunCards(categoryFilter) {
+            const grid = document.getElementById('rukunCardsGrid');
+            grid.innerHTML = '';
+
+            const filtered = categoryFilter === 'semua' 
+                ? rukunData 
+                : rukunData.filter(r => r.category === categoryFilter);
+
+            filtered.forEach(r => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl p-4 border-2 border-emerald-100 card-shadow flex items-start gap-3 hover:border-emerald-400 transition";
+                
+                let badgeBg = "bg-purple-100 text-purple-800";
+                if(r.category === 'Qauli') badgeBg = "bg-blue-100 text-blue-800";
+                if(r.category === 'Fi\'li') badgeBg = "bg-amber-100 text-amber-900";
+
+                card.innerHTML = `
+                    <div class="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-xl shrink-0 border border-emerald-200">
+                        ${r.icon}
+                    </div>
+                    <div class="space-y-1">
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="font-extrabold text-sm text-emerald-950">${r.id}. ${r.name}</span>
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${badgeBg}">${r.category}</span>
+                        </div>
+                        <p class="text-xs text-gray-600 leading-relaxed">${r.desc}</p>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterRukun(cat) {
+            document.querySelectorAll('.rukun-filter-btn').forEach(btn => {
+                btn.className = "rukun-filter-btn px-4 py-2 rounded-xl bg-white text-emerald-800 border border-emerald-300";
+            });
+            
+            const selectedBtn = document.getElementById(`btn-rukun-${cat.toLowerCase().replace('\'','')}`);
+            if(selectedBtn) selectedBtn.className = "rukun-filter-btn px-4 py-2 rounded-xl bg-emerald-700 text-white shadow";
+            
+            renderRukunCards(cat);
+        }
+
+        function answerRukunGame(selectedCat) {
+            const current = rukunGameQuestions[currentGameRukunIdx];
+            const feedback = document.getElementById('gameRukunFeedback');
+
+            if (selectedCat === current.category) {
+                feedback.className = "text-xs font-bold text-emerald-600";
+                feedback.textContent = "🎉 SYABAS! Jawapan anda betul!";
+                speakText("Syabas! Jawapan anda betul!");
+            } else {
+                feedback.className = "text-xs font-bold text-red-600";
+                feedback.textContent = `💡 Belum tepat. ${current.name} ialah Rukun ${current.category}!`;
+                speakText(`Belum tepat. ${current.name} ialah Rukun ${current.category}`);
+            }
+
+            setTimeout(() => {
+                currentGameRukunIdx = (currentGameRukunIdx + 1) % rukunGameQuestions.length;
+                const next = rukunGameQuestions[currentGameRukunIdx];
+                document.getElementById('gameRukunBadge').textContent = `Soalan ${currentGameRukunIdx + 1} / ${rukunGameQuestions.length}`;
+                document.getElementById('gameRukunQuestion').textContent = next.name;
+                feedback.textContent = "";
+            }, 1800);
+        }
+
+
+        /* ================= MODUL 05 QUIZ LOGIC ================= */
+        function renderQuizQuestion() {
+            const qContainer = document.getElementById('quizQuestionBody');
+            const q = quizQuestions[currentQuizIdx];
+
+            document.getElementById('quizCounter').textContent = `Soalan ${currentQuizIdx + 1} / ${quizQuestions.length}`;
+            document.getElementById('quizScoreText').textContent = quizScore;
+
+            let optionsHtml = '';
+            q.options.forEach((opt, idx) => {
+                optionsHtml += `
+                    <label class="flex items-center p-3.5 bg-gray-50 hover:bg-emerald-50 border-2 border-gray-200 hover:border-emerald-400 rounded-2xl cursor-pointer transition text-xs md:text-sm font-semibold group">
+                        <input type="radio" name="quizOpt" value="${idx}" class="w-4 h-4 text-emerald-600 focus:ring-emerald-500">
+                        <span class="ml-3 text-gray-800 group-hover:text-emerald-950">${opt}</span>
+                    </label>
+                `;
+            });
+
+            qContainer.innerHTML = `
+                <div class="space-y-2">
+                    <h3 class="text-base md:text-lg font-extrabold text-emerald-950">${q.q}</h3>
+                    <p class="text-xs text-gray-500 italic">${q.hint}</p>
+                </div>
+                <div class="space-y-2.5 pt-2">
+                    ${optionsHtml}
+                </div>
+                <div id="quizFeedbackBox" class="hidden text-xs font-bold p-3 rounded-xl"></div>
+            `;
+        }
+
+        function submitQuizAnswer() {
+            const selected = document.querySelector('input[name="quizOpt"]:checked');
+            if(!selected) {
+                alert("Sila pilih satu jawapan sebelum meneruskan!");
+                return;
+            }
+
+            const q = quizQuestions[currentQuizIdx];
+            const answerIdx = parseInt(selected.value);
+            const feedbackBox = document.getElementById('quizFeedbackBox');
+
+            feedbackBox.classList.remove('hidden');
+
+            if(answerIdx === q.correct) {
+                quizScore += 20;
+                feedbackBox.className = "text-xs font-bold p-3 rounded-xl bg-emerald-100 text-emerald-900 border border-emerald-300";
+                feedbackBox.textContent = `✅ ${q.explanation}`;
+                speakText("Betul! Syabas!");
+            } else {
+                feedbackBox.className = "text-xs font-bold p-3 rounded-xl bg-red-100 text-red-900 border border-red-300";
+                feedbackBox.textContent = `❌ Belum tepat. Jawapan yang betul ialah pilihan ${q.options[q.correct]}`;
+                speakText("Belum tepat.");
+            }
+
+            document.getElementById('quizScoreText').textContent = quizScore;
+            updateTPMastery(quizScore);
+
+            setTimeout(() => {
+                currentQuizIdx++;
+                if(currentQuizIdx < quizQuestions.length) {
+                    renderQuizQuestion();
+                } else {
+                    showQuizCompletion();
+                }
+            }, 2000);
+        }
+
+        function updateTPMastery(score) {
+            const tpDisplay = document.getElementById('tpScoreDisplay');
+            if(score <= 20) tpDisplay.textContent = "TP 1";
+            else if(score <= 40) tpDisplay.textContent = "TP 2";
+            else if(score <= 60) tpDisplay.textContent = "TP 3";
+            else if(score <= 80) tpDisplay.textContent = "TP 4";
+            else tpDisplay.textContent = "TP 5 - 6";
+        }
+
+        function showQuizCompletion() {
+            const qContainer = document.getElementById('quizQuestionBody');
+            document.getElementById('quizSubmitBtn').classList.add('hidden');
+
+            qContainer.innerHTML = `
+                <div class="text-center py-6 space-y-3">
+                    <div class="text-5xl">🏆</div>
+                    <h3 class="text-2xl font-black text-emerald-900">TAHNIAH! KUIZ SELESAI!</h3>
+                    <p class="text-sm text-gray-600">Jumlah skor yang anda capai ialah <strong class="text-amber-500 text-xl">${quizScore} / 100</strong>.</p>
+                    <button onclick="resetQuiz()" class="bg-amber-400 hover:bg-amber-300 text-emerald-950 font-extrabold px-6 py-2.5 rounded-xl text-xs shadow-md btn-bounce mt-3">
+                        🔄 Ulang Kuiz Sekali Lagi
+                    </button>
+                </div>
+            `;
+            speakText(`Tahniah! Kuiz telah selesai. Jumlah markah anda ialah ${quizScore}`);
+        }
+
+        function resetQuiz() {
+            currentQuizIdx = 0;
+            quizScore = 0;
+            document.getElementById('quizSubmitBtn').classList.remove('hidden');
+            renderQuizQuestion();
+        }
+
+
+        /* ================= MODUL 06 STAR RATING ================= */
+        function setRating(groupNum, rating) {
+            const group = document.getElementById(`starGroup${groupNum}`);
+            const stars = group.querySelectorAll('span');
+            stars.forEach((s, idx) => {
+                if(idx < rating) {
+                    s.classList.add('text-amber-400');
+                    s.classList.remove('text-gray-300');
+                } else {
+                    s.classList.remove('text-amber-400');
+                    s.classList.add('text-gray-300');
+                }
+            });
+            speakText(`Terima kasih atas penilaian ${rating} bintang.`);
+        }
+
+        function submitFeedbackForm(e) {
+            e.preventDefault();
+            alert("Terima kasih! Maklum balas impak pedagogi anda telah berjaya disimpan.");
+            e.target.reset();
+        }
+
+        function toggleQRModal() {
+            const modal = document.getElementById('qrModal');
+            modal.classList.toggle('hidden');
+        }
+
+        // Initialize App on load
+        window.onload = function() {
+            renderRukunCards('semua');
+            renderQuizQuestion();
+        }
+    </script>
+</body>
+</html>
